@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function generateId() {
   return +new Date();
 }
+
 function generateBookObject(id, title, author, year, isComplete) {
   return {
     id,
@@ -33,6 +34,8 @@ function generateBookObject(id, title, author, year, isComplete) {
     isComplete
   }
 }
+
+
 const isStorageExist = () => {
   if (typeof (Storage) === undefined) {
     alert('Browser tidak mendukung local storage');
@@ -99,6 +102,7 @@ function makeBook(bookObject) {
     greenButton.addEventListener('click', function () {
       undoBookFromComplete(bookObject.id);
     });
+
     const redButton = document.createElement('button');
     redButton.classList.add('red');
     redButton.innerText = 'Hapus Buku';
@@ -125,6 +129,7 @@ function makeBook(bookObject) {
     redButton.addEventListener('click', function () {
       removeBookFromComplete(bookObject.id);
     });
+
     textContainer.append(greenButton, redButton)
   }
   return article;
@@ -180,9 +185,6 @@ function undoBookFromComplete(bookId) {
 }
 
 
-
-
-
 function findBook(bookId) {
   for (bookItem of books) {
     if (bookItem.id === bookId) {
@@ -191,6 +193,8 @@ function findBook(bookId) {
   }
   return null;
 }
+
+
 function findBookIndex(bookId) {
   for (index in books) {
     if (books[index].id === bookId) {
@@ -203,13 +207,17 @@ function findBookIndex(bookId) {
 
 // RENDER BOOK
 document.addEventListener(RENDER_EVENT, function (event) {
+
   const displayBooks = event.detail.searchQuery;
   const incompleteBookshelfList = document.getElementById('incompleteBookshelfList');
   const completeBookshelfList = document.getElementById('completeBookshelfList');
+
   incompleteBookshelfList.innerHTML = '';
   completeBookshelfList.innerHTML = '';
+
   for (const bookItem of displayBooks) {
     const bookElement = makeBook(bookItem);
+
     if (!bookItem.isComplete) {
       incompleteBookshelfList.append(bookElement);
     } else {
@@ -223,8 +231,10 @@ document.addEventListener(RENDER_EVENT, function (event) {
 // Search Book Feature
 function searchBooks() {
   const searchBookTitle = document.getElementById('searchBookTitle').value.toLowerCase();
+
   if (inputSearch === '') {
     document.dispatchEvent(new CustomEvent(RENDER_EVENT, { detail: { searchQuery: books } }));
+
   } else {
     const filteredBooks = books.filter(function (key) {
       return key.title.toLowerCase().includes(inputSearch);
