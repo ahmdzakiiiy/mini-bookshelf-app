@@ -141,9 +141,10 @@ function addBook() {
   const bookTitle = document.getElementById('inputBookTitle').value;
   const bookAuthor = document.getElementById('inputBookAuthor').value;
   const bookYear = parseInt(document.getElementById('inputBookYear').value);
+  const bookComplete = document.getElementById('inputBookIsComplete').value;
 
   const generatedID = generateId();
-  const bookObject = generateBookObject(generatedID, bookTitle, bookAuthor, bookYear, false);
+  const bookObject = generateBookObject(generatedID, bookTitle, bookAuthor, bookYear, bookComplete);
   books.push(bookObject);
 
   document.dispatchEvent(new CustomEvent(RENDER_EVENT, { detail: { searchQuery: books } }));
