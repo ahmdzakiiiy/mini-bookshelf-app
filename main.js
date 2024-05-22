@@ -228,6 +228,7 @@ document.addEventListener(RENDER_EVENT, function (event) {
 
 
 
+
 // Search Book Feature
 function searchBooks() {
   const searchBookTitle = document.getElementById('searchBookTitle').value.toLowerCase();
