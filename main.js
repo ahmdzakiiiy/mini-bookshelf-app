@@ -65,7 +65,7 @@ const loadDataFromStorage = () => {
       books.push(book);
     }
   }
-  document.dispatchEvent(new Event(RENDER_EVENT));
+  document.dispatchEvent(new CustomEvent(RENDER_EVENT, { detail: { searchQuery: books } }));
 }
 
 
@@ -146,7 +146,7 @@ function addBook() {
   const bookObject = generateBookObject(generatedID, bookTitle, bookAuthor, bookYear, false);
   books.push(bookObject);
 
-  document.dispatchEvent(new Event(RENDER_EVENT));
+  document.dispatchEvent(new CustomEvent(RENDER_EVENT, { detail: { searchQuery: books } }));
   saveData();
 }
 
@@ -158,7 +158,7 @@ function addBookToComplete(bookId) {
   if (bookTarget == null) return;
   bookTarget.isComplete = true;
 
-  document.dispatchEvent(new Event(RENDER_EVENT));
+  document.dispatchEvent(new CustomEvent(RENDER_EVENT, { detail: { searchQuery: books } }));
   saveData();
 }
 
@@ -169,7 +169,7 @@ function removeBookFromComplete(bookId) {
   if (bookTarget === -1) return;
   books.splice(bookTarget, 1);
 
-  document.dispatchEvent(new Event(RENDER_EVENT));
+  document.dispatchEvent(new CustomEvent(RENDER_EVENT, { detail: { searchQuery: books } }));
   saveData();
 }
 
@@ -180,7 +180,7 @@ function undoBookFromComplete(bookId) {
   if (bookTarget == null) return;
   bookTarget.isComplete = false;
 
-  document.dispatchEvent(new Event(RENDER_EVENT));
+  document.dispatchEvent(new CustomEvent(RENDER_EVENT, { detail: { searchQuery: books } }));
   saveData();
 }
 
@@ -230,16 +230,23 @@ document.addEventListener(RENDER_EVENT, function (event) {
 
 
 // Search Book Feature
-function searchBooks() {
+const searchSubmit = document.getElementById('searchSubmit');
+
+searchSubmit.addEventListener('click', function (event) {
+  event.preventDefault();
+
   const searchBookTitle = document.getElementById('searchBookTitle').value.toLowerCase();
 
-  if (inputSearch === '') {
+  if (searchBookTitle === '') {
     document.dispatchEvent(new CustomEvent(RENDER_EVENT, { detail: { searchQuery: books } }));
 
   } else {
+
     const filteredBooks = books.filter(function (key) {
-      return key.title.toLowerCase().includes(inputSearch);
+      return key.title.toLowerCase().includes(searchBookTitle);
     })
     document.dispatchEvent(new CustomEvent(RENDER_EVENT, { detail: { searchQuery: filteredBooks } }))
   }
 }
+);
+
